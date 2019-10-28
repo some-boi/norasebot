@@ -1,0 +1,24 @@
+{
+  "name": "muffin-rewrite",
+  "version": "1.0.0",
+  "description": "A Discord bot (re)written in JavaScript (Node.js) using discord.js",
+  "main": "index.js",
+  "scripts": {
+    "start": "node express.js"
+  },
+  "author": "Raluvy95",
+  "license": "ISC",
+  "dependencies": {
+    "brawlstars": "^1.2.3",
+    "discord.js": "^11.5.1",
+    "opusscript": "^0.0.7",
+    "ytdl-core-discord": "^1.0.3",
+    "express": "^4.16.4",
+    "moment": "^2.24.0",
+    "superagent": "^5.1.0",
+    "snoowrap": "^1.20.0",
+    "youtube-node": "^1.3.3",
+    "ytdl-core": "^1.0.0",
+    "quick.db": "^6.3.2"
+  }
+}
