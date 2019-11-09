@@ -1,13 +1,13 @@
-const http = require('http');
-const bot = require("./index.js")
+
 const express = require('express');
+const bot = require("./index2.js")
 const app = express();
 app.get("/", (request, response) => {
   console.log(Date.now() + " Ping Received");
   response.sendStatus(200);
-  response.send("Ok")
+  request.send("Ok")
+  request.sendFiles("index.html")
 });
 app.listen(process.env.PORT);
-setInterval(() => {
-  http.get(`http://${process.env.PROJECT_DOMAIN}.glitch.me/`);
-}, 280000);
+
+console.log("bitch")

@@ -12,7 +12,7 @@ module.exports = {
         let hours = Math.floor(totalSeconds / 3600);
         totalSeconds %= 3600;
         let minutes = Math.floor(totalSeconds / 60);
-        let seconds = totalSeconds % 60;
+        let seconds = Math.round(totalSeconds % 60);
         let stat = `\nGuild: ${message.client.guilds.size}\nUsers: ${message.client.users.size}\nChannels: ${message.client.channels.size}`
         let em = new discord.RichEmbed()
         .setAuthor(message.author.username, message.author.avatarURL)

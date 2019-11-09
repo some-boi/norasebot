@@ -3,7 +3,7 @@ module.exports = {
 	aliases: [],module: "admin",
 	usage: "<code>",
 	ownerOnly: true,
-    execute: (message, args) => {
+    execute: async (message, args) => {
 		const clean = text => {
             if (typeof(text) === "string") return text.replace(/`/g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
             else return text;
