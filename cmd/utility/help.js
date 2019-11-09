@@ -10,15 +10,12 @@ module.exports = {
     execute: (message, args) => {
         let bruh = args[0]
         if(bruh) {
-            try {
-            var cmmd = message.client.commands.find(m => (m.name == bruh || m.aliases.find(a => a == bruh)) && !m.ownerOnly)
+            
+            var cmmd = message.client.commands.find(m => m.name == bruh && !m.ownerOnly)
             if(!cmmd){
                 return message.reply("No command found")
             }
-            } catch {
-              return message.reply("No command found")
-            }
-            let e = new discord.RichEmbed()
+            let e1 = new discord.RichEmbed()
             .setTitle(`${cmmd.name}`)
             .setDescription(!cmmd.description ? "No description found" : cmmd.description)
             .addField("Usage", !cmmd.usage ? `;${cmmd.name}` : `;${cmmd.name} ${cmmd.usage}`)
@@ -26,7 +23,7 @@ module.exports = {
             .addField("Cooldown", !cmmd.cooldown ? "3 seconds" : `${cmmd.cooldown} seconds`, true)
             .addField("Permission requirement", !cmmd.permission ? "No requirements" : cmmd.permission.join(", "),true)
             .addField("Hidden?", !cmmd.hidden ? "No hidden" : "Yes",true)
-            return message.channel.send(e)
+          return message.channel.send(e1)
         }
         const modules = fs.readdirSync(`./cmd/`).filter(file => !file.startsWith("_"))
         const e = new discord.RichEmbed()

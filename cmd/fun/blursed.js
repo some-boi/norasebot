@@ -1,28 +1,19 @@
 const {RichEmbed} = require("discord.js")
 const fetch = require('superagent');
 module.exports = {
-  name: "meme",
-  aliases: ["memes"],
+  name: "blursed",
+  aliases: [],
   usage: "<text>",
   module: "fun",
   cooldown: 4,
   execute: async (message,args) => {
-    function meme() {
-      let me = [
-            'dankmemes', 'memes', 'MemeEconomy', 'wholesomememes',
-            'meirl', 'me_irl', 'i_irl', 'bikinibottomtwitter',
-            'starterpacks', 'dankchristianmemes',
-            'youdontsurf', 'im14andthisisdeep', 'ComedyCemetery', "disneyvacation", "cursedcomments",
-            'deepfried', 'okbuddyretard']
-      let index = Math.floor(Math.random() * (me.length - 1) + 1)
-      return me[index]
-    }
+
     function rand() {
       let num = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14','15','16','17','18','19','20']
       let item = num[Math.floor(Math.random()*num.length)];
       return item
     }
-    const ye = await fetch.get(`https://api.imgur.com/3/gallery/r/${meme()}/time/week`).set('Authorization',`Client-ID ${process.env.IMGUR}`).set('Accept', 'application/json')
+    const ye = await fetch.get(`https://api.imgur.com/3/gallery/r/blursedimages/time/week`).set('Authorization',`Client-ID ${process.env.IMGUR}`).set('Accept', 'application/json')
     const yes = JSON.parse(ye.text).data
     const no = yes[Number(rand())]
     if(!no) {

@@ -12,8 +12,11 @@ module.exports = {
 		if(!user) { 
 		    user = args[0]
 			if(!user) {
-				// user = stuff
-				return message.reply("Input your Brawl Stars Token", new Attachment("https://cdn.glitch.com/77a81f9d-ba11-4b9e-ad58-ab4119ff297e%2Ftag.png", "tag.png")).catch(e => console.error(e))
+        if(!message.client.db.has(message.author.id)) {
+          				return message.reply("Input your Brawl Stars Token", new Attachment("https://cdn.glitch.com/77a81f9d-ba11-4b9e-ad58-ab4119ff297e%2Ftag.png", "tag.png")).catch(e => console.error(e))
+        } else {
+          user = message.client.db.get(message.author.id).toString()
+        }
 			}
 		}
 		try {
