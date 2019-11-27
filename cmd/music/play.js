@@ -3,7 +3,6 @@ const ytdl = require("ytdl-core");
 const ytdlDiscord = require("ytdl-core-discord");
 const yt = require("youtube-node");
 const YouTube = new yt();
-
 YouTube.setKey(process.env.YT);
 
 module.exports = {
@@ -11,6 +10,7 @@ module.exports = {
   description: "Play command.",
   usage: "[command name]",
   args: true,
+  aliases: ["p"],
   module: "music",
   cooldown: 0,
   execute: async (message, args) => {
@@ -107,14 +107,15 @@ module.exports = {
         dispatcher.setVolumeLogarithmic(queue.volume / 5);
         let e = new RichEmbed().setAuthor;
         if (msg)
-              if (song.loop) { return
-              } else {
-                queue.textChannel.send(
-                  `🎶 Start playing: **${song.title}** [${time(
-                    song.duration
-                  )}]\n**Requested by: ${song.requested}**`
-                );
-              }
+          if (song.loop) {
+            return;
+          } else {
+            queue.textChannel.send(
+              `🎶 Start playing: **${song.title}** [${time(
+                song.duration
+              )}]\n**Requested by: ${song.requested}**`
+            );
+          }
       };
 
       try {
@@ -135,85 +136,90 @@ module.exports = {
       );
     } else {
       YouTube.search(args.join(" "), 2, async (error, result) => {
-        if(error) return console.error(error)
+        if (error) return console.error(error);
         var ye = JSON.parse(JSON.stringify(result, null, 2)).items[0].id
-            .videoId
-                  message.songid = await ytdl.getInfo(
-              `https://www.youtube.com/watch?v=${ye}`
-            );
-          const song = {
-            id: message.songid.video_id,
-            title: message.songid.title,
-            url: message.songid.video_url,
-            requested: `${message.author.username}#${message.author.discriminator}`,
-            duration: message.songid.length_seconds
-          };
+          .videoId;
+        message.songid = await ytdl.getInfo(
+          `https://www.youtube.com/watch?v=${ye}`
+        );
+        const song = {
+          id: message.songid.video_id,
+          title: message.songid.title,
+          url: message.songid.video_url,
+          requested: `${message.author.username}#${message.author.discriminator}`,
+          duration: message.songid.length_seconds
+        };
 
-          if (serverQueue) {
-            serverQueue.songs.push(song);
-            return message.channel.send(
-              `✅ **${song.title}** has been added to the queue!`
-            );
-          }
+        if (serverQueue) {
+          serverQueue.songs.push(song);
+          return message.channel.send(
+            `✅ **${song.title}** has been added to the queue!`
+          );
+        }
 
-          const queueConstruct = {
-            textChannel: message.channel,
-            voiceChannel,
-            connection: null,
-            songs: [],
-            volume: 2,
-            playing: true
-          };
-          message.client.queue.set(message.guild.id, queueConstruct);
-          queueConstruct.songs.push(song);
+        const queueConstruct = {
+          textChannel: message.channel,
+          voiceChannel,
+          connection: null,
+          songs: [],
+          volume: 2,
+          playing: true
+        };
+        message.client.queue.set(message.guild.id, queueConstruct);
+        queueConstruct.songs.push(song);
 
-          const play = async song => {
-            const queue = message.client.queue.get(message.guild.id);
-            if (!song) {
-              queue.voiceChannel.leave();
-              message.client.queue.delete(message.guild.id);
-              return;
-            }
-            let msg = true;
-            const dispatcher = queue.connection
-              .playOpusStream(await ytdlDiscord(!song.url ? `https:https://www.youtube.com/watch?v=${song.id}` : song.url), { passes: 3 })
-              .on("end", reason => {
-                if (reason === "Stream is not generating quickly enough.")
-                  console.log("Song ended.");
-                else console.log(reason);
-                if (song.loop) {
-                  play(queue.songs[0]);
-                } else {
-                  queue.songs.shift();
-                  play(queue.songs[0]);
-                }
-              })
-              .on("error", error => console.error(error));
-            dispatcher.setVolumeLogarithmic(queue.volume / 5);
-            let e = new RichEmbed().setAuthor;
-            if (msg)
-              
-                queue.textChannel.send(
-                  `🎶 Start playing: **${song.title}** [${time(
-                    song.duration
-                  )}]\n**Requested by: ${song.requested}**`
-                );
-              
-          };
-
-          try {
-            const connection = await voiceChannel.join();
-            queueConstruct.connection = connection;
-            play(queueConstruct.songs[0]);
-          } catch (error) {
-            console.error(`I could not join the voice channel: ${error}`);
+        const play = async song => {
+          const queue = message.client.queue.get(message.guild.id);
+          if (!song) {
+            queue.voiceChannel.leave();
             message.client.queue.delete(message.guild.id);
-            await voiceChannel.leave();
-            return message.channel.send(
-              `I could not join the voice channel: ${error}`
-            );
+            return;
           }
-        })
+          let msg = true;
+          const dispatcher = queue.connection
+            .playOpusStream(
+              await ytdlDiscord(
+                !song.url
+                  ? `https:https://www.youtube.com/watch?v=${song.id}`
+                  : song.url
+              ),
+              { passes: 3 }
+            )
+            .on("end", reason => {
+              if (reason === "Stream is not generating quickly enough.")
+                console.log("Song ended.");
+              else console.log(reason);
+              if (song.loop) {
+                play(queue.songs[0]);
+              } else {
+                queue.songs.shift();
+                play(queue.songs[0]);
+              }
+            })
+            .on("error", error => console.error(error));
+          dispatcher.setVolumeLogarithmic(queue.volume / 5);
+          let e = new RichEmbed().setAuthor;
+          if (msg)
+            queue.textChannel.send(
+              `🎶 Start playing: **${song.title}** [${time(
+                song.duration
+              )}]\n**Requested by: ${song.requested}**`
+            );
+        };
+
+        try {
+          const connection = await voiceChannel.join();
+          queueConstruct.connection = connection;
+          play(queueConstruct.songs[0]);
+        } catch (error) {
+          console.error(`I could not join the voice channel: ${error}`);
+          message.client.queue.delete(message.guild.id);
+          await voiceChannel.leave();
+          return message.channel.send(
+            `I could not join the voice channel: ${error}`
+          );
+        }
+      });
     }
   }
 };

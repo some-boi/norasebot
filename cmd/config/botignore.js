@@ -2,7 +2,7 @@ module.exports = {
   name: "botignore",
   aliases: ["ignorebot", "ignore-bot", "bot-ignore"],
   usage: "",
-  module: "announce",
+  module: "config",
   cooldown: 2,
   permission: ["MANAGE_GUILD"],
   description: "Ignore welcome/goodbye/autorole system when the bot joined",

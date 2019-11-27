@@ -9,15 +9,16 @@ module.exports = {
   usage: "<tag>",
   execute: async (message, args) => {
     let option = args[0];
+    let nulls = false
     if (!option) {
       if (!message.client.db.get(message.author.id)) {
-        return message.reply("Input the clan's tag");
+        nulls = true
       } else {
         const get = message.client.db.get(message.author.id).toString();
         const m = await client.getPlayer(get);
-        option = !m.club.tag ? null : m.club.tag
+        option = !m.club.tag ? nulls = true : m.club.tag
       }
-
+      if(nulls) return message.reply("Input the clan's tag");
       try {
         const search = await client.getClub(option);
         let bestmember = search.members.sort((x, y) => y.trophies - x.trophies);

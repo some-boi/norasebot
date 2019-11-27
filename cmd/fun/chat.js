@@ -8,8 +8,10 @@ module.exports = {
   module: "fun",
   execute: async (message, args) => {
       message.channel.startTyping();
+    try {
     let bruh = await api.chat(args.join(' '))
-    message.channel.send(bruh)
+        message.channel.send(bruh).catch(e => message.channel.send("It looks like our API did an oppsie, please try again"))
+    } catch { return message.channel.send("It looks like our API did an oppsie, please try again")}
       message.channel.stopTyping();
       return
   }
