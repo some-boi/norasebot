@@ -30,10 +30,10 @@ module.exports = {
         .setTitle(`Avaliable commands (${message.client.commands.size} commands)`)
         .setThumbnail(message.client.user.avatarURL)
         for (const module1 of modules){
-            if(module1 == "admin") continue
+            if(module1 == "admin" || module1 == "music") continue
           try{
-            let kek = message.client.commands.filter(m => m.module == module1).map(m => m.name).join(", ")
-            e.addField(module1.toUpperCase(), kek)
+            let kek = message.client.commands.filter(m => m.module == module1).map(m => `\`${m.name}\``).join(", ")
+            e.addField(module1 == "config" ? "SERVER CONFIG" : module1.toUpperCase(), kek)
           } catch {}
         }
         return message.channel.send(e)

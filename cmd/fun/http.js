@@ -9,7 +9,7 @@ module.exports = {
   description: "Send with HTTP codes",
   execute: (message, args) => {
     let arg = args[0]
-    if (!arg || arg.length !== 3 || arg.isNaN()) arg = 404
+    if (!arg || arg.length !== 3) arg = 404
     message.channel.send(new Attachment(`https://http.cat/${arg}.jpg`, "http.jpg"))
   }
 }
