@@ -1,3 +1,6 @@
+![NoraseBot](https://cdn.glitch.com/77a81f9d-ba11-4b9e-ad58-ab4119ff297e%2F747a58b3-ecbf-499d-bd67-9838f06f8ac3.image.png?v=1573499068234 "NoraseBot")
+
+
 # NoraseBot
 **A simple multipurpose Discord Bot who makes your server better!**
 
