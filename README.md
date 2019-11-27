@@ -2,7 +2,8 @@
 
 
 # NoraseBot
-**A simple multipurpose Discord Bot who makes your server better!**
+**A simple multipurpose Discord Bot who makes your server better!**\
+This bot was rewritten in JavaScript from MuffinBot
 
 # Install
 This bot isn't released yet
